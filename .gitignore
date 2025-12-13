@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+
+# Virtual environments
+.venv/
+venv/
+
+# Local env
+.env
+
+# Uploads (optional to commit; keep local by default)
+static/uploads/
+
+# OS
+.DS_Store

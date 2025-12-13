@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Miwalavie - Beauty in Every Strand{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/index.css') }}">
+{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h2>Beauty in Every Strand ✨</h2>
+    <p>Elevate your everyday look with handcrafted scrunchies, clips, and bonnets designed with care and creativity.</p>
+    <a href="{{ url_for('store.products') }}">Explore Collection</a>
+  </section>
+
+  <section id="products" class="products">
+    <h3>Our Products</h3>
+    <div class="product-grid">
+      <div class="product">
+        <img src="{{ url_for('static', filename='images/1.jpg') }}" alt="Product">
+        <h4>Bow</h4>
+      </div>
+      <div class="product">
+        <img src="{{ url_for('static', filename='images/2.jpg') }}" alt="Product">
+        <h4>Sailors Bow</h4>
+      </div>
+      <div class="product">
+        <img src="{{ url_for('static', filename='images/3.jpg') }}" alt="Product">
+        <h4>Velvet Scrunchies</h4>
+      </div>
+    </div>
+  </section>
+
+  <section id="about" class="about">
+    <h3>About Miwalavie</h3>
+    <p>Miwalavie is a handmade hair accessory brand dedicated to bringing color, comfort, and confidence to your style. Each piece is crafted with love and attention to detail, perfect for any occasion.</p>
+  </section>
+
+  <section id="contact" class="contact">
+    <h3>Contact Us</h3>
+    <p>Want to order? Sign in and place an order in-app.</p>
+    <a href="{{ url_for('store.products') }}">Shop Now</a>
+  </section>
+
+  <footer>
+    © <span id="year"></span> Miwalavie. All rights reserved.
+  </footer>
+
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+{% endblock %}

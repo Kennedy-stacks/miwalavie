@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block title %}Miwalavie | Products{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/products.css') }}">
+{% endblock %}
+
+{% block content %}
+  <section class="hero">
+    <h2>Our Collection</h2>
+    <p>Soft, handmade, and made with love. Explore our signature pieces below.</p>
+  </section>
+
+  <section class="products-grid">
+    {% if products|length == 0 %}
+      <div style="grid-column: 1 / -1; padding: 2rem;">
+        <p>No products yet. {% if current_user.is_authenticated and current_user.is_admin %}Add some in the <a href="{{ url_for('admin.products') }}">Admin</a>.{% endif %}</p>
+      </div>
+    {% endif %}
+
+    {% for p in products %}
+      <div class="product-card">
+        <img src="{{ url_for('static', filename=p.image_path) }}" alt="{{ p.name }}">
+        <h3>{{ p.name }}</h3>
+        <p>{{ format_ngn(p.price_ngn) }}</p>
+        <p style="font-size: 0.95rem; line-height: 1.4;">{{ p.description }}</p>
+        <form method="post" action="{{ url_for('store.cart_add', product_id=p.id) }}">
+          <button type="submit">Add to Cart</button>
+        </form>
+      </div>
+    {% endfor %}
+  </section>
+
+  <footer>
+    <p>© 2025 | Miwalavie</p>
+  </footer>
+{% endblock %}

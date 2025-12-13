@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Claim | Miwalavie{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
+{% endblock %}
+
+{% block content %}
+  <div class="auth-box">
+    <h2>Admin claim</h2>
+    <p class="small">This will enable admin access for your current account.</p>
+
+    <form method="post" action="{{ url_for('auth.admin_claim_post') }}">
+      <label>Type <code>yes</code> to confirm</label>
+      <input name="confirm" placeholder="yes" />
+      <button type="submit">Enable admin</button>
+    </form>
+  </div>
+{% endblock %}

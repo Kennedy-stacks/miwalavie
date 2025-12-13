@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+
+{% block title %}Miwalavie | Cart{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+{% endblock %}
+
+{% block content %}
+  <section class="cart-section">
+    <h2>Your Shopping Cart</h2>
+    <p class="note">Review your items and proceed to checkout when you're ready.</p>
+
+    <div class="cart-container">
+      {% if lines|length == 0 %}
+        <p>Your cart is empty.</p>
+      {% endif %}
+
+      <form method="post" action="{{ url_for('store.cart_update') }}" style="width: 100%;">
+        {% for line in lines %}
+          <div class="cart-item">
+            <img src="{{ url_for('static', filename=line.product.image_path) }}" alt="{{ line.product.name }}">
+            <div class="cart-details">
+              <h3>{{ line.product.name }}</h3>
+              <p>{{ format_ngn(line.product.price_ngn) }}</p>
+              <div class="quantity-control">
+                <input type="number" name="qty_{{ line.product.id }}" value="{{ line.qty }}" min="1" />
+              </div>
+              <p style="margin-top: 0.5rem; font-weight: 600;">Line: {{ format_ngn(line.line_total) }}</p>
+            </div>
+
+            <button class="remove-btn" formmethod="post" formaction="{{ url_for('store.cart_remove', product_id=line.product.id) }}" type="submit">Remove</button>
+          </div>
+        {% endfor %}
+
+        {% if lines|length > 0 %}
+          <div style="margin-top: 1rem;">
+            <button type="submit">Update quantities</button>
+          </div>
+        {% endif %}
+      </form>
+    </div>
+
+    <div class="cart-summary">
+      <h3>Cart Summary</h3>
+      <p>Subtotal: <span>{{ format_ngn(total) }}</span></p>
+
+      {% if lines|length > 0 %}
+        <form method="post" action="{{ url_for('store.checkout_post') }}">
+          <button class="checkout-btn" type="submit">Proceed to Checkout</button>
+        </form>
+      {% else %}
+        <a class="checkout-btn" href="{{ url_for('store.products') }}">Continue Shopping</a>
+      {% endif %}
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 | Miwalavie</p>
+  </footer>
+{% endblock %}

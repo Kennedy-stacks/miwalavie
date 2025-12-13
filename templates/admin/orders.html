@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Orders | Miwalavie{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+  <style>
+    .admin-box { max-width: 1000px; margin: 2rem auto; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+    .order { border: 1px solid #eee; border-radius: 12px; padding: 1rem; margin: 1rem 0; }
+    .items { margin: .5rem 0 0 0; padding-left: 1.2rem; }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="admin-box">
+    <h2 style="color:#e85d8b;">Orders</h2>
+    <p class="note">See registered users and what they ordered. Open a chat to reply.</p>
+
+    {% if orders|length == 0 %}
+      <p>No orders yet.</p>
+    {% endif %}
+
+    {% for o in orders %}
+      <div class="order">
+        <div style="display:flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;">
+          <div>
+            <h3 style="margin:0;">Order #{{ o.id }}</h3>
+            <p style="margin:.25rem 0;">User: <strong>{{ o.user.email }}</strong></p>
+            <p style="margin:.25rem 0;">Placed: {{ o.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+          </div>
+          <div style="text-align:right;">
+            <p style="margin:.25rem 0;">Total: <strong style="color:#e85d8b;">{{ format_ngn(o.total_ngn) }}</strong></p>
+            <a class="checkout-btn" href="{{ url_for('store.order_chat', order_id=o.id) }}">Open Chat</a>
+          </div>
+        </div>
+
+        {% set items = items_by_order.get(o.id, []) %}
+        {% if items|length > 0 %}
+          <ul class="items">
+            {% for it in items %}
+              <li>{{ it.product.name }} — {{ it.quantity }} × {{ format_ngn(it.unit_price_ngn) }}</li>
+            {% endfor %}
+          </ul>
+        {% endif %}
+      </div>
+    {% endfor %}
+
+    <div style="margin-top: 1rem;">
+      <a href="{{ url_for('admin.dashboard') }}">Back to Admin</a>
+    </div>
+  </div>
+{% endblock %}

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+  <title>{% block title %}Miwalavie{% endblock %}</title>
+  {% block head %}{% endblock %}
+</head>
+<body>
+  <header class="navbar">
+    <h1 class="logo">Miwalavie</h1>
+    <nav>
+      <a href="{{ url_for('store.index') }}">Home</a>
+      <a href="{{ url_for('store.products') }}">Products</a>
+      <a href="{{ url_for('store.cart') }}">Cart</a>
+      {% if current_user.is_authenticated %}
+        <a href="{{ url_for('store.my_orders') }}">Orders</a>
+        <a href="{{ url_for('auth.logout') }}">Logout</a>
+      {% else %}
+        <a href="{{ url_for('auth.login') }}">Login</a>
+        <a href="{{ url_for('auth.register') }}">Register</a>
+      {% endif %}
+      {% if current_user.is_authenticated and current_user.is_admin %}
+        <a href="{{ url_for('admin.dashboard') }}">Admin</a>
+      {% endif %}
+    </nav>
+  </header>
+
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <div style="max-width: 900px; margin: 1rem auto; padding: 0 1rem;">
+        {% for m in messages %}
+          <div style="background: #fff5f7; border: 1px solid #ffe6ec; border-radius: 10px; padding: .75rem 1rem; margin-bottom: .5rem;">
+            {{ m }}
+          </div>
+        {% endfor %}
+      </div>
+    {% endif %}
+  {% endwith %}
+
+  {% block content %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Miwalavie | My Orders{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+{% endblock %}
+
+{% block content %}
+  <section class="cart-section">
+    <h2>My Orders</h2>
+    <p class="note">Your recent orders and chat with the seller.</p>
+
+    <div class="cart-container">
+      {% if orders|length == 0 %}
+        <p>You have no orders yet.</p>
+      {% endif %}
+
+      {% for o in orders %}
+        <div class="cart-item">
+          <div class="cart-details">
+            <h3>Order #{{ o.id }}</h3>
+            <p>Total: {{ format_ngn(o.total_ngn) }}</p>
+            <p>Placed: {{ o.created_at.strftime('%Y-%m-%d %H:%M') }}</p>
+          </div>
+          <a class="checkout-btn" href="{{ url_for('store.order_chat', order_id=o.id) }}">Open Chat</a>
+        </div>
+      {% endfor %}
+    </div>
+  </section>
+{% endblock %}

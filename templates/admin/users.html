@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Users | Miwalavie{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+  <style>
+    .admin-box { max-width: 900px; margin: 2rem auto; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+    table { width: 100%; border-collapse: collapse; }
+    th, td { text-align: left; padding: .75rem .5rem; border-bottom: 1px solid #eee; }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="admin-box">
+    <h2 style="color:#e85d8b;">Users</h2>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Email</th>
+          <th>Admin</th>
+          <th>Registered</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for u in users %}
+          <tr>
+            <td>{{ u.email }}</td>
+            <td>{{ 'Yes' if u.is_admin else 'No' }}</td>
+            <td>{{ u.created_at.strftime('%Y-%m-%d %H:%M') }}</td>
+            <td>
+              {% if u.id != current_user.id %}
+                <form method="post" action="{{ url_for('admin.toggle_admin', user_id=u.id) }}">
+                  <button class="checkout-btn" type="submit" style="padding:.4rem 1rem; border-radius: 20px;">Toggle admin</button>
+                </form>
+              {% else %}
+                <span style="color:#666;">(you)</span>
+              {% endif %}
+            </td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+    <div style="margin-top: 1rem;">
+      <a href="{{ url_for('admin.dashboard') }}">Back to Admin</a>
+    </div>
+  </div>
+{% endblock %}

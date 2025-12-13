@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+
+{% block title %}Order #{{ order.id }} | Chat{% endblock %}
+
+{% block head %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+  <style>
+    .chat-box { max-width: 900px; margin: 2rem auto; background: #fff; padding: 1.5rem; border-radius: 12px; box-shadow: 0 3px 8px rgba(0,0,0,0.1); }
+    .msg { padding: .75rem 1rem; border-radius: 12px; margin: .5rem 0; max-width: 70%; }
+    .msg.me { margin-left: auto; background: #ffe6ec; }
+    .msg.them { margin-right: auto; background: #fff5f7; }
+    .meta { font-size: .8rem; color: #666; margin-top: .25rem; }
+    textarea { width: 100%; min-height: 80px; border-radius: 10px; border: 1px solid #ddd; padding: .75rem; font-family: inherit; }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <div class="chat-box">
+    <h2>Order #{{ order.id }}</h2>
+    <p class="note">Total: <span style="color:#e85d8b; font-weight:600;">{{ format_ngn(order.total_ngn) }}</span></p>
+
+    <div style="margin-top: 1rem;">
+      {% for m in messages %}
+        {% set is_me = (m.sender_user_id == current_user.id) %}
+        <div class="msg {{ 'me' if is_me else 'them' }}">
+          <div>{{ m.body | e | replace('\n', '<br>') | safe }}</div>
+          <div class="meta">
+            {% if m.sender %}
+              {{ 'You' if is_me else m.sender.email }}
+            {% else %}
+              Admin
+            {% endif %}
+            • {{ m.created_at.strftime('%Y-%m-%d %H:%M') }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+
+    <form method="post" action="{{ url_for('store.order_chat_post', order_id=order.id) }}" style="margin-top: 1rem;">
+      <textarea name="message" placeholder="Type your message..."></textarea>
+      <div style="margin-top: .5rem; text-align: right;">
+        <button class="checkout-btn" type="submit">Send</button>
+      </div>
+    </form>
+
+    <div style="margin-top: 1rem;">
+      {% if current_user.is_admin %}
+        <a href="{{ url_for('admin.orders') }}">Back to Admin Orders</a>
+      {% else %}
+        <a href="{{ url_for('store.my_orders') }}">Back to My Orders</a>
+      {% endif %}
+    </div>
+  </div>
+{% endblock %}
