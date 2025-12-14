@@ -8,7 +8,7 @@ from flask_login import current_user, login_required
 from werkzeug.utils import secure_filename
 
 from .extensions import db
-from .models import Order, OrderItem, Product, User, format_ngn
+from .models import Order, OrderItem, OrderMessage, Product, User, format_ngn
 
 
 bp = Blueprint("admin", __name__, url_prefix="/admin")
@@ -146,3 +146,26 @@ def orders():
         items_by_order=items_by_order,
         format_ngn=format_ngn,
     )
+
+
+@bp.post("/clear-database")
+def clear_database():
+    # Clear all data
+    OrderMessage.query.delete()
+    OrderItem.query.delete()
+    Order.query.delete()
+    Product.query.delete()
+    User.query.delete()
+    db.session.commit()
+
+    # Clear uploads
+    import os
+    upload_folder = current_app.config.get("UPLOAD_FOLDER", "static/uploads")
+    if os.path.exists(upload_folder):
+        for file in os.listdir(upload_folder):
+            file_path = os.path.join(upload_folder, file)
+            if os.path.isfile(file_path):
+                os.remove(file_path)
+
+    flash("Database and uploads cleared. You may need to recreate an admin user.")
+    return redirect(url_for("admin.dashboard"))

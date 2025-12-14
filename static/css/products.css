@@ -5,57 +5,6 @@ body {
   color: #444;
 }
 
-/* Navbar */
-header {
-  background: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 2rem;
-}
-
-nav {
-  display: flex;
-  align-items: center;
-}
-
-nav a {
-  color: #555;
-  text-decoration: none;
-  margin-left: 1.5rem;
-  transition: color 0.3s;
-}
-
-nav a:hover {
-  color: #e85d8b;
-}
-
-.logo {
-  font-weight: bold;
-  font-size: 1.8rem;
-  color: #e85d8b;
-}
-
-.nav-links {
-  list-style: none;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 1.2rem;
-  margin: 0;
-  padding: 0;
-}
-
-.nav-links a {
-  text-decoration: none;
-  color: #555;
-  font-weight: 500;
-  transition: color 0.3s;
-}
-
-.nav-links a:hover,
-.nav-links a.active {
-  color: #e85d8b;
-}
 
 /* Hero */
 .hero {
@@ -178,11 +127,6 @@ footer {
     margin-bottom: 0.8rem;
   }
 
-  .nav-links {
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 1rem;
-  }
 
   .hero h2 {
     font-size: 2rem;

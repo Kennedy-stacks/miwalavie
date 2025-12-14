@@ -5,7 +5,6 @@
 {% block head %}
   <link rel="stylesheet" href="{{ url_for('static', filename='css/auth.css') }}">
 {% endblock %}
-
 {% block content %}
   <div class="auth-box">
     <h2>Admin</h2>
@@ -14,5 +13,12 @@
     <p class="small"><a href="{{ url_for('admin.products') }}">Manage Products</a></p>
     <p class="small"><a href="{{ url_for('admin.users') }}">View Users</a></p>
     <p class="small"><a href="{{ url_for('admin.orders') }}">View Orders & Chats</a></p>
+
+    <hr style="margin: 1rem 0;" />
+
+    <p class="small" style="color: red;">Danger Zone</p>
+    <form method="post" action="{{ url_for('admin.clear_database') }}">
+      <button type="submit" style="background: red; color: white;" onclick="return confirm('Are you sure? This will delete everything!')">Clear Database & Uploads</button>
+    </form>
   </div>
 {% endblock %}
